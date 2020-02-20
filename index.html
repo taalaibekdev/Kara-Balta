@@ -1,0 +1,181 @@
+
+<!DOCTYPE xhtml>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Мектептер</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.js"></script>
+   <style type="text/css">
+   #mapid { height: 100% }
+   .кол{cursor:pointer;}
+   aside{
+	float:right;
+	padding:16px;
+	background-color:none;
+	max-width:25%; background-color:lightGray; border: 1px solid black;}
+	
+   header{background-color:NavajoWhite; border: 1px solid black; padding: none;}
+   </style>
+</head>
+<body>
+<header>
+
+</header>
+
+<aside>
+<h3 id="count" align="center">0 мектеп</h3><br>
+
+<ol>
+	
+	<li><label id="kara_balta" class="кол"><input type="checkbox" id="kara_balta_id" onclick="kara_baltaf()"/>Кара-Балта шаары</label></li><br>
+	<li><label id="cayil" class="кол"><input type="checkbox" id="cayil_id" onclick="cayilf()"/>Жайыл району</label></li><br>
+	<li><label id="panfilov" class="кол"><input type="checkbox" id="panfilov_id" onclick="panfilovf()"/>Панфилов району</label></li><br>
+	<li><label id="moskovskiy" class="кол"><input type="checkbox" id="moskovskiy_id" onclick="moskovskiyf()"/>Московский району</label></li><br>
+	<li><label id="sokuluk" class="кол"><input type="checkbox" id="sokuluk_id" onclick="sokulukf()"/>Сокулук району</label></li><br>
+	<li><label id="sapat" class="кол"><input type="checkbox" id="sapat_id" onclick="sapatf()"/>Сапат лицейи</label></li><br>
+</ol>
+
+</aside>
+<div id="mapid"></div>
+<script>
+var mymap = L.map('mapid').setView([42.81584,74.03427], 11);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',{foo: 'bar'}).addTo(mymap);
+	
+	
+var Icon = L.Icon.extend({
+    options: {
+	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+	}
+});
+
+L.icon = function (options) {
+    return new L.Icon(options);
+};	
+	
+var redIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'}),
+    greenIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'}),
+    blueIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png'}),
+    blackIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png'}),
+    yellowIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png'}),
+    violetIcon = new Icon({iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png'});
+
+
+
+var kara_balta_array=[a1=L.marker([42.82649, 73.85891],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Средняя Школа №1.<br><a href='https://www.google.com/maps/place/42.82649+73.85891/@42.82649,73.85891,15z' target='_blank'>42.82649, 73.85891</a>"),
+				 a2=L.marker([42.81917,73.83871],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары!</b><br>Средняя Школа №2<br><a href='https://www.google.com/maps/place/42.81917+73.83871/@42.81917,73.83871,15z' target='_blank'>42.81917,73.83871</a>"),
+				 a3=L.marker([42.52353, 72.2323],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Средняя Школа №3  <br><a href='https://www.google.com/maps/place/42.52353+72.2323 /@42.52353,72.2323 ,15z' target='_blank'>42.52353, 72.2323 </a>"),
+				 a4=L.marker([42.81166,73.8366],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Средняя Школа №4 <br><a href='https://www.google.com/maps/place/42.81166+73.8366/@42.81166,73.8366,15z' target='_blank'>42.81166, 73.8366</a>"),
+				 a5=L.marker([42.80068,73.86032],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Средняя Школа №5 <br><a href='https://www.google.com/maps/place/42.80068+73.86032/@42.80068,73.86032,15z' target='_blank'>42.80068, 73.86032</a>"),
+				 a6=L.marker([42.7982,73.85111],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Школа гимназия №6 <br><a href='https://www.google.com/maps/place/42.7982+73.85111/@42.7982,73.85111,15z' target='_blank'>42.7982, 73.85111</a>"),
+				 a7=L.marker([42.79866,73.83713],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Средняя Школа №8 <br><a href='https://www.google.com/maps/place/42.79866+73.83713/@42.79866,73.83713,15z' target='_blank'>42.79866, 73.83713</a>"),
+				 a8=L.marker([42.80588,73.82616],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Средняя Школа №9 <br><a href='https://www.google.com/maps/place/42.80588+73.82616/@42.80588,73.82616,15z' target='_blank'>42.80588, 73.82616</a>"),
+				 a9=L.marker([42.81105,73.83781],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>средняя школа лицей №10 им А.С.МАКАРЕНКО <br><a href='https://www.google.com/maps/place/42.81105+73.83781/@42.81105,73.83781,15z' target='_blank'>42.81105, 73.83781</a>"),
+				 a10=L.marker([42.51715, 72.26273],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Средняя Школа №11 <br><a href='https://www.google.com/maps/place/42.51715+72.26273/@42.51715,72.26273,15z' target='_blank'>42.51715, 72.26273</a>"),
+				 a11=L.marker([42.80056,73.85232],{icon: greenIcon}).bindPopup("<b>Кара-Балта шаары</b><br>Средняя Школа №12 <br><a href='https://www.google.com/maps/place/42.80056+73.85232/@42.80056,73.85232,15z' target='_blank'>42.80056, 73.85232</a>")];
+
+  cayil_array=[b1=L.marker([42.83083,73.89717],{icon: blueIcon}).bindPopup("<b>Жайыл району</b><br>Новониколаевская школа-гимназия                          <br><a href='https://www.google.com/maps/place/42.83083+73.89717/@42.83083,73.89717,15z' target='_blank'>42.83083, 73.89717</a>"),
+			   	b2=L.marker([42.81795,73.79422],{icon: blueIcon}).bindPopup("<b>Жайыл району</b><br>Алексеевская Средняя Школа                               <br><a href='https://www.google.com/maps/place/42.81795+73.79422/@42.81795,73.79422,15z' target='_blank'>42.81795, 73.79422</a>")],
+					
+    panfilov_array=[ c1=L.marker([42.80769,73.69810],{icon: redIcon}).bindPopup("<b>Панфилов району</b><br>школа им.Болотбекова           <br><a href='https://www.google.com/maps/place/42.80769+73.69810/@42.80769,73.69810,15z' target='_blank'>42.80769, 73.69810</a>"),
+					  c2=L.marker([42.80769,73.69810],{icon: redIcon}).bindPopup("<b>Жайыл району</b><br>Средняя школа им. Эсенжана Кожомкулова                                 <br><a href='https://www.google.com/maps/place/42.80769+73.69810/@42.80769,73.69810,15z' target='_blank'>42.80769, 73.69810</a>"),
+					  c3=L.marker([42.761162,73.717626],{icon: redIcon}).bindPopup("<b>Жайыл району</b><br>Вознесеновская средняя школа                              <br><a href='https://www.google.com/maps/place/42.761162+73.717626/@42.761162,73.717626,15z' target='_blank'>42.761162, 73.717626</a>"),
+					  c4=L.marker([42.8076924,73.5911082],{icon: redIcon}).bindPopup("<b>Жайыл району</b><br>Чорголинская начальная школа                              <br><a href='https://www.google.com/maps/place/42.8076924+73.5911082/@42.8076924,73.5911082,15z' target='_blank'>42.8076924, 73.5911082</a>"),
+					  c5=L.marker([42.8076924,73.5911082],{icon: redIcon}).bindPopup("<b>Жайыл району</b><br>Чорголинская начальная школа                              <br><a href='https://www.google.com/maps/place/42.8076924+73.5911082/@42.8076924,73.5911082,15z' target='_blank'>42.8076924, 73.5911082</a>"),
+					  c6=L.marker([42.8202198,73.6789659],{icon: redIcon}).bindPopup("<b>Московский району</b><br>Каинды СШ №3        <br><a href='https://www.google.com/maps/place/42.8202198+73.6789659/@42.8202198,73.6789659,15z' target='_blank'>42.8202198,73.6789659</a>"),
+					  c7=L.marker([42.8299532,73.6842345],{icon: redIcon}).bindPopup("<b>Московский району</b><br>Каинды СШ №2        <br><a href='https://www.google.com/maps/place/42.8299532+73.6842345/@42.8299532,73.6842345,15z' target='_blank'>42.8299532,73.6842345</a>")],
+						
+    moskovskiy_array=[d1=L.marker([42.8295334,74.1000995],{icon: blackIcon}).bindPopup("<b>Московский району</b><br>Первомайская Средняя Школа       <br><a href='https://www.google.com/maps/place/42.8295334+74.1000995/@42.8295334,74.1000995,15z' target='_blank'>42.8295334, 74.1000995</a>"),
+					d2=L.marker([42.8354288,74.1237315],{icon: blackIcon}).bindPopup("<b>Московский району</b><br>Беловодская Школа 3        <br><a href='https://www.google.com/maps/place/42.8354288+74.1237315/@42.8354288,74.1237315,15z' target='_blank'>42.8354288,74.1237315</a>"),
+					d3=L.marker([42.831651,74.0931114],{icon: blackIcon}).bindPopup("<b>Московский району</b><br>Беловодская средняя школа № 2 имени В.В. Степаненко        <br><a href='https://www.google.com/maps/place/42.831651+74.0931114/@42.831651,74.0931114,15z' target='_blank'>42.831651, 74.0931114</a>"),
+					d4=L.marker([42.8251329,74.1258018],{icon: blackIcon}).bindPopup("<b>Московский району</b><br>Христианская Средняя школа        <br><a href='https://www.google.com/maps/place/42.8251329+74.1258018/@42.8251329,74.1258018,15z' target='_blank'>42.8251329, 74.1258018</a>"),
+					d5=L.marker([42.8219405,74.098045],{icon: blackIcon}).bindPopup("<b>Московский району</b><br>ср.школа им. К. Сыйданова        <br><a href='https://www.google.com/maps/place/42.8219405+74.098045/@42.8219405,74.098045,15z' target='_blank'>42.8219405, 74.098045</a>"),
+					d6=L.marker([42.820149,74.1197184],{icon: blackIcon}).bindPopup("<b>Московский району</b><br>Ак-Суусская Школа №4        <br><a href='https://www.google.com/maps/place/42.820149+74.1197184/@42.820149,74.1197184,15z' target='_blank'>42.820149, 74.1197184</a>"),
+					d7=L.marker([42.6941681,74.0244493],{icon: blackIcon}).bindPopup("<b>Московский району</b><br>Им Бакирова        <br><a href='https://www.google.com/maps/place/42.6941681+74.0244493/@42.6941681,74.0244493,15z' target='_blank'>42.6941681,74.0244493</a>")],
+						
+    sokuluk_array=[    e1=L.marker([42.8459092,74.2916156],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>средняя школа-лицей №3 им. К. Шопоковой         <br><a href='https://www.google.com/maps/place/42.8459092+74.2916156/@42.8459092,74.2916156,15z' target='_blank'>42.8459092,74.2916156</a>"),
+					 e2=L.marker([42.8554112,74.3010087],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>СШГ-1 Имени А.Жакшылыкова              <br><a href='https://www.google.com/maps/place/42.8554112+74.3010087/@42.8554112,74.3010087,15z' target='_blank'>42.8554112, 4.3010087</a>"),
+					 e3=L.marker([42.8663384,74.3497004],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Гавриловская Средняя Школа              <br><a href='https://www.google.com/maps/place/42.8663384+74.3497004/@42.8663384,74.3497004,15z' target='_blank'>42.8663384,74.3497004</a>"),
+					 e4=L.marker([42.863693,74.3358542],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Средняя школа-гимназия №2 г. Шопоков              <br><a href='https://www.google.com/maps/place/42.863693+74.3358542/@42.863693,74.3358542,15z' target='_blank'>42.863693,74.3358542</a>"),
+					 e5=L.marker([42.8039697,74.4407721],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Школа Б. Джамгырчинова              <br><a href='https://www.google.com/maps/place/42.8039697+74.4407721/@42.8039697,74.4407721,15z' target='_blank'>42.8039697,74.4407721</a>"),
+					 e6=L.marker([42.857122,74.3422506],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Школа-гимназия №1 г. Шопокова              <br><a href='https://www.google.com/maps/place/42.857122+74.3422506/@42.857122,74.3422506,15z' target='_blank'>42.857122,74.3422506</a>"),
+					 e7=L.marker([42.8757499,74.4828675],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Новопавловская УОКЛ #1              <br><a href='https://www.google.com/maps/place/42.8757499+74.4828675/@42.8757499,74.4828675,15z' target='_blank'>42.8757499,74.4828675</a>"),
+					 e8=L.marker([42.8751979,74.4664474],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Новопавловская СШ №2              <br><a href='https://www.google.com/maps/place/42.8751979+74.4664474/@42.8751979,74.4664474,15z' target='_blank'>42.8751979,74.4664474</a>"),
+					 e9=L.marker([42.8348734,74.5233064],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Орокская Средняя Школа              <br><a href='https://www.google.com/maps/place/42.8348734+74.5233064/@42.8348734,74.5233064,15z' target='_blank'>42.8348734,74.5233064</a>"),
+					 e10=L.marker([42.8684675,74.447407],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Военно Антоновская УВКГ              <br><a href='https://www.google.com/maps/place/42.8684675+74.447407/@42.8684675,74.447407,15z' target='_blank'>42.8684675,74.447407</a>"),
+					 e11=L.marker([42.916909,74.4307015],{icon: yellowIcon}).bindPopup("<b>Сокулук району</b><br>Фрунзенская Средняя Школа 1              <br><a href='https://www.google.com/maps/place/42.916909+74.4307015/@42.916909,74.4307015,15z' target='_blank'>42.916909,74.4307015</a>")],
+	
+    sapat_array=[sapat27=L.marker([42.8232385,73.9089265],{icon: violetIcon}).bindPopup("<b>Жайыл району</b><br>\"Жайыл Баатыр\" Сапат лицейи. <br><a href='https://www.google.com/maps/place/42.8232385+73.9089265/@42.8232385,73.9089265,15z' target='_blank'>42.8232385, 73.9089265</a>")];
+    
+	
+    kara_balta_layer=L.layerGroup(kara_balta_array);
+	cayil_layer=L.layerGroup(cayil_array);
+	panfilov_layer=L.layerGroup(panfilov_array);
+	moskovskiy_layer=L.layerGroup(moskovskiy_array);
+	sokuluk_layer=L.layerGroup(sokuluk_array);
+	sapat_layer=L.layerGroup(sapat_array);
+
+function kara_baltaf(){
+  if(document.getElementById("kara_balta_id").checked==true){mymap.addLayer(kara_balta_layer); document.getElementById('kara_balta').style.color="limegreen";}
+  else{mymap.removeLayer(kara_balta_layer); document.getElementById('kara_balta').style.color="black";}
+  countf();
+}
+	
+function cayilf(){
+  if(document.getElementById("cayil_id").checked==true){mymap.addLayer(cayil_layer); document.getElementById('cayil').style.color="limegreen";}
+  else{mymap.removeLayer(cayil_layer); document.getElementById('cayil').style.color="black";}
+  countf();
+}
+
+function panfilovf(){
+  if(document.getElementById("panfilov_id").checked==true){mymap.addLayer(panfilov_layer); document.getElementById('panfilov').style.color="limegreen";}
+  else{mymap.removeLayer(panfilov_layer); document.getElementById('panfilov').style.color="black";}
+  countf();
+}
+
+function moskovskiyf(){
+  if(document.getElementById("moskovskiy_id").checked==true){mymap.addLayer(moskovskiy_layer); document.getElementById('moskovskiy').style.color="limegreen";}
+  else{mymap.removeLayer(moskovskiy_layer); document.getElementById('moskovskiy').style.color="black";}
+  countf();
+}
+
+function sokulukf(){
+  if(document.getElementById("sokuluk_id").checked==true){mymap.addLayer(sokuluk_layer); document.getElementById('sokuluk').style.color="limegreen";}
+  else{mymap.removeLayer(sokuluk_layer); document.getElementById('sokuluk').style.color="black";}
+  countf();
+}
+
+function sapatf(){
+  if(document.getElementById("sapat_id").checked==true){mymap.addLayer(sapat_layer); document.getElementById('sapat').style.color="limegreen";}
+  else{mymap.removeLayer(sapat_layer); document.getElementById('sapat').style.color="black";}
+  countf();
+}
+	
+	
+
+function countf(){
+var i=0;
+if(document.getElementById("kara_balta_id").checked==true){i+=kara_balta_array.length}
+if(document.getElementById("cayil_id").checked==true){i+=cayil_array.length}
+if(document.getElementById("panfilov_id").checked==true){i+=panfilov_array.length}
+if(document.getElementById("moskovskiy_id").checked==true){i+=moskovskiy_array.length}
+if(document.getElementById("sokuluk_id").checked==true){i+=sokuluk_array.length}
+if(document.getElementById("sapat_id").checked==true){i+=sapat_array.length}
+
+$("#count").text(i+" мектеп");
+}
+
+
+
+
+</script>
+
+</body>
+
+</html>
